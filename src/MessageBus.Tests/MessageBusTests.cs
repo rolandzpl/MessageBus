@@ -7,10 +7,12 @@ namespace DDD
     class MessageBusTests
     {
         [Test]
-        public void x()
+        public void PublishMessageA_SubscribedForMessageA_ReceivesMessageA()
         {
             var receivedMessages = new List<object>();
             bus.Subscribe<MessageA>(m => receivedMessages.Add(m));
+
+            bus.Publish(new MessageA());
 
             Assert.That(receivedMessages, Has.Exactly(1).InstanceOf<object>());
         }
