@@ -14,7 +14,7 @@ namespace DDD
 
             bus.Publish(new MessageA());
 
-            Assert.That(receivedMessages, Has.Exactly(1).InstanceOf<object>());
+            Assert.That(receivedMessages, Has.Exactly(1).InstanceOf<MessageA>());
         }
 
         [SetUp]
@@ -26,7 +26,7 @@ namespace DDD
         private IMessageBus bus;
     }
 
-    internal class MessageA
-    {
-    }
+    internal class MessageA { }
+
+    internal class MessageB { }
 }
