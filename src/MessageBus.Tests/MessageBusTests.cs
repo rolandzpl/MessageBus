@@ -32,9 +32,9 @@ namespace DDD
         public void PublishMessageAA_SubscribedForMessageA_ReceivesMessageC()
         {
             int counter = 0;
-            bus.Subscribe<MessageAA>(m => counter++);
+            bus.Subscribe<MessageA>(m => counter++);
 
-            bus.Publish(new MessageA());
+            bus.Publish(new MessageAA());
 
             Assert.That(counter, Is.EqualTo(1));
         }

@@ -25,9 +25,10 @@ namespace DDD
 
         private IEnumerable<Action<object>> GetHandlers(Type messageType)
         {
-            return !routes.TryGetValue(messageType, out List<Action<object>> result) ?
-                new List<Action<object>>() :
-                result;
+            return routes
+                .Where(i => i.Key.IsAssignableFrom(messageType))
+                .SelectMany(i => i.Value)
+                .ToArray();
         }
 
         private static void TryPublishInternal(Action<object> handler, object message)
