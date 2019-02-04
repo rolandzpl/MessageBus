@@ -2,7 +2,7 @@
 
 namespace DDD
 {
-    internal interface IMessageBus
+    public interface IMessageBus
     {
         void Subscribe(Type messageType, Action<object> handler);
         void Subscribe<T>(Action<T> handler);

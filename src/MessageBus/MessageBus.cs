@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DDD
 {
-    internal class MessageBus : IMessageBus
+    public class MessageBus : IMessageBus
     {
         private readonly Dictionary<Type, List<Action<Object>>> routes =
             new Dictionary<Type, List<Action<object>>>();
