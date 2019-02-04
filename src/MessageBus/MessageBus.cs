@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DDD
 {
@@ -11,8 +12,8 @@ namespace DDD
         public void Publish(object message)
         {
             var messageType = message.GetType();
-            List<Action<Object>> handlers;
-            if (!routes.TryGetValue(messageType, out handlers))
+            var handlers = GetHandlers(messageType);
+            if (!handlers.Any())
             {
                 return;
             }
@@ -20,6 +21,13 @@ namespace DDD
             {
                 TryPublishInternal(h, message);
             }
+        }
+
+        private IEnumerable<Action<object>> GetHandlers(Type messageType)
+        {
+            return !routes.TryGetValue(messageType, out List<Action<object>> result) ?
+                new List<Action<object>>() :
+                result;
         }
 
         private static void TryPublishInternal(Action<object> handler, object message)
