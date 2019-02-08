@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 
 namespace DDD
 {
@@ -42,6 +43,13 @@ namespace DDD
         [Test]
         public void PublishMessageA_NoSubscribtionForMessageA_NothingHappens()
         {
+            Assert.DoesNotThrow(() => bus.Publish(new MessageAA()));
+        }
+
+        [Test]
+        public void PublishMessageA_SubscriberForMessageAThrowsException_NothingHappens()
+        {
+            bus.Subscribe<MessageA>(m => throw new Exception());
             Assert.DoesNotThrow(() => bus.Publish(new MessageAA()));
         }
 
