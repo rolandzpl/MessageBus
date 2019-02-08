@@ -39,6 +39,12 @@ namespace DDD
             Assert.That(counter, Is.EqualTo(1));
         }
 
+        [Test]
+        public void PublishMessageA_NoSubscribtionForMessageA_NothingHappens()
+        {
+            Assert.DoesNotThrow(() => bus.Publish(new MessageAA()));
+        }
+
         [SetUp]
         protected void SetUp()
         {
