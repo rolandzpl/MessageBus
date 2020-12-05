@@ -25,14 +25,5 @@ namespace DDD
             HandlerRef.TryGetTarget(out target);
             return target;
         }
-
-        public void InvokeHandler(object message)
-        {
-            try
-            {
-                Target.Invoke(message);
-            }
-            catch { }
-        }
     }
 }
