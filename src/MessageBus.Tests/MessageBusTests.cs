@@ -41,6 +41,18 @@ namespace DDD
         }
 
         [Test]
+        public void PublishMessageA_SubscribedForMessageAButThenHandlerReleased_NothingHappens()
+        {
+            int counter = 0;
+            new MessageAHandler(bus, m => counter++);
+            GC.Collect(); // Handler should have been disposed now...
+
+            bus.Publish(new MessageAA());
+
+            Assert.That(counter, Is.EqualTo(0));
+        }
+
+        [Test]
         public void PublishMessageA_NoSubscribtionForMessageA_NothingHappens()
         {
             Assert.DoesNotThrow(() => bus.Publish(new MessageAA()));
@@ -62,9 +74,25 @@ namespace DDD
         private IMessageBus bus;
     }
 
-    internal class MessageA { }
+    class MessageA { }
 
-    internal class MessageB { }
+    class MessageB { }
 
-    internal class MessageAA : MessageA { }
+    class MessageAA : MessageA { }
+
+    class MessageAHandler
+    {
+        private readonly Action<MessageA> callback;
+
+        public MessageAHandler(IMessageBus bus, Action<MessageA> callback)
+        {
+            this.callback = callback;
+            bus.Subscribe<MessageA>(OnMessageA);
+        }
+
+        private void OnMessageA(MessageA e)
+        {
+            callback(e);
+        }
+    }
 }

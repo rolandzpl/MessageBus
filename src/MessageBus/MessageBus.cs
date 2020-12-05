@@ -6,32 +6,27 @@ namespace DDD
 {
     public class MessageBus : IMessageBus
     {
-        private readonly Dictionary<Type, List<Action<Object>>> routes =
-            new Dictionary<Type, List<Action<object>>>();
+        private readonly List<Route> routes = new List<Route>();
 
         public void Publish(object message)
         {
             var messageType = message.GetType();
-            var handlers = GetHandlers(messageType);
-            if (!handlers.Any())
-            {
-                return;
-            }
-            foreach (var h in handlers)
-            {
-                TryPublishInternal(h, message);
-            }
-        }
-
-        private IEnumerable<Action<object>> GetHandlers(Type messageType)
-        {
-            return routes
-                .Where(i => i.Key.IsAssignableFrom(messageType))
-                .SelectMany(i => i.Value)
+            var routesForThisMessage = GetRoutes(messageType);
+            var deadRefs = routesForThisMessage
+                .Where(_ => _.Target == null)
                 .ToArray();
+            foreach (var r in deadRefs)
+            {
+                routes.Remove(r);
+            }
+            var liveRefs = routesForThisMessage.Except(deadRefs);
+            foreach (var r in liveRefs)
+            {
+                InvokeHandler(r.Target, message);
+            }
         }
 
-        private static void TryPublishInternal(Action<object> handler, object message)
+        public void InvokeHandler(Action<object> handler, object message)
         {
             try
             {
@@ -40,20 +35,16 @@ namespace DDD
             catch { }
         }
 
-        public void Subscribe(Type messageType, Action<object> handler)
+        private IEnumerable<Route> GetRoutes(Type messageType)
         {
-            List<Action<object>> handlers;
-            if (!routes.TryGetValue(messageType, out handlers))
-            {
-                handlers = new List<Action<object>>();
-                routes.Add(messageType, handlers);
-            }
-            handlers.Add(handler);
+            return routes
+                .Where(_ => _.MessageType.IsAssignableFrom(messageType))
+                .ToArray();
         }
 
-        public void Subscribe<T>(Action<T> handler)
+        public void Subscribe(Type messageType, Action<object> handler)
         {
-            Subscribe(typeof(T), (object o) => handler.Invoke((T)o));
+            routes.Add(new Route(messageType, handler));
         }
     }
 }
