@@ -1,14 +1,21 @@
 using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DDD
 {
     public static class MessageHandlingExtensions
     {
-        public static void UseMessageHandlers(this IServiceProvider sp, MessageHandlersConfigurationBuilder builder)
+        public static void UseMessageHandlers(this IApplicationBuilder app, Action<MessageHandlersConfigurationBuilder> builder)
         {
-            var cfg = new MessageHandlersConfigurationBuilder(sp);
+            var cfg = new MessageHandlersConfigurationBuilder(app.ApplicationServices);
             cfg.Build();
+        }
+
+        public static IServiceCollection AddMessageBus(this IServiceCollection services)
+        {
+            services.AddSingleton<IMessageBus, MessageBus>();
+            return services;
         }
 
         public static IServiceCollection AddMessageHandler(this IServiceCollection services, Type handlerType)
