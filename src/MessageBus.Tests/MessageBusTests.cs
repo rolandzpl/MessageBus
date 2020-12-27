@@ -3,7 +3,6 @@ using System;
 
 namespace DDD
 {
-    [TestFixture]
     class MessageBusTests
     {
         [Test]
@@ -82,10 +81,12 @@ namespace DDD
 
     class MessageAHandler
     {
+        private readonly IMessageBus bus;
         private readonly Action<MessageA> callback;
 
         public MessageAHandler(IMessageBus bus, Action<MessageA> callback)
         {
+            this.bus = bus;
             this.callback = callback;
             bus.Subscribe<MessageA>(OnMessageA);
         }
