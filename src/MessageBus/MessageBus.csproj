@@ -1,31 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;net4.5</TargetFrameworks>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<UseFullSemVerForNuGet>true</UseFullSemVerForNuGet>
-    <RootNamespace>DDD</RootNamespace>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-  </PropertyGroup>
+		<RootNamespace>DDD</RootNamespace>
+		<AssemblyName>MessageBus</AssemblyName>
+	</PropertyGroup>
 
 	<PropertyGroup>
 		<PackageId>Lithium.MessageBus</PackageId>
+		<UseFullSemVerForNuGet>true</UseFullSemVerForNuGet>
 		<Title>Lightweight message bus</Title>
 		<Description>Provides simple functionality allowing publishing messages to subscribers.</Description>
 		<Authors>Roland Żerek</Authors>
 		<Company>lithium.com.pl</Company>
 		<Copyright>Copyright © 2019-2020 by Roland Żerek (lithium.com.pl)</Copyright>
-		<RootNamespace>DDD</RootNamespace>
-		<AssemblyName>MessageBus</AssemblyName>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/rolandzpl/MessageBus</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/rolandzpl/MessageBus</PackageProjectUrl>
 	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="GitVersionTask" Version="5.5.1">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="GitVersionTask" Version="5.5.1">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
 </Project>
