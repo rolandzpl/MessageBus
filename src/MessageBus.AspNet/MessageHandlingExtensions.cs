@@ -6,10 +6,11 @@ namespace DDD
 {
     public static class MessageHandlingExtensions
     {
-        public static void UseMessageHandlers(this IApplicationBuilder app, Action<MessageHandlersConfigurationBuilder> builder)
+        public static void UseMessageHandlers(this IApplicationBuilder app, Action<MessageHandlersConfigurationBuilder> configure)
         {
-            var cfg = new MessageHandlersConfigurationBuilder(app.ApplicationServices);
-            cfg.Build();
+            var builder = new MessageHandlersConfigurationBuilder(app.ApplicationServices);
+            configure(builder);
+            builder.Build();
         }
 
         public static IServiceCollection AddMessageBus(this IServiceCollection services)
