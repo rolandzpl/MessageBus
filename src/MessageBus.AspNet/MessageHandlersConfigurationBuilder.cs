@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,7 @@ namespace DDD
 
         public void Build()
         {
+            Trace.WriteLine($"Preparing for message sunbscription configuration. Found {registrations.Count} subscriptions.");
             var bus = serviceProvider.GetRequiredService<IMessageBus>();
             foreach (var r in registrations)
             {
@@ -66,9 +68,14 @@ namespace DDD
                     .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
                     .Where(_ => HasOneParameterOfType(_, messageType))
                     .ToArray();
+                if (methods.Length == 0)
+                {
+                    throw new MissingMethodException($"Type {handlerType} does not provide method for message of type {messageType.Name}");
+                }
                 foreach (var mthd in methods)
                 {
                     var d = mthd.CreateDelegate(handler);
+                    Trace.WriteLine($"Subscribing for message {messageType.Name} using method {mthd.Name}");
                     bus.Subscribe(messageType, m => d.DynamicInvoke(m));
                 }
             }
@@ -93,6 +100,7 @@ namespace DDD
 
             public override void SubscribeHandler(IMessageBus bus)
             {
+                Trace.WriteLine($"Subscribing for message {typeof(TMessage).Name} using delegate");
                 bus.Subscribe<TMessage>(callback);
             }
         }

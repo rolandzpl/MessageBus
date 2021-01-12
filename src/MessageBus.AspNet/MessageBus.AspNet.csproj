@@ -1,21 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<RootNamespace>DDD</RootNamespace>
 		<AssemblyName>MessageBus.AspNet</AssemblyName>
-  </PropertyGroup>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\MessageBus\MessageBus.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\MessageBus\MessageBus.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+	</ItemGroup>
 
-  <PropertyGroup>
+	<PropertyGroup>
 		<UseFullSemVerForNuGet>true</UseFullSemVerForNuGet>
 		<PackageId>Lithium.MessageBus.AspNet</PackageId>
 		<Title>AspNet Core extensions for Lithium.MessageBus</Title>
